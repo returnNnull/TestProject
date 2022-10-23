@@ -30,15 +30,17 @@ class LoginActivity : AppCompatActivity() {
             ActivityResultContracts.StartActivityForResult()
         ) {
             var adress: Uri? = it.data?.data
-            var proj: Array<String> = arrayOf(CommonDataKinds.Phone.DISPLAY_NAME)
+            var proj: Array<String> = arrayOf(CommonDataKinds.Phone.DISPLAY_NAME, CommonDataKinds.Phone.NUMBER)
             var cursor: Cursor? = contentResolver.query(adress!!, proj, null,
                 null, null)
 
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
-                    val index = cursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
-                    val name = cursor.getString(index)
-                    message.setText(name)
+                    val nameIndex = cursor.getColumnIndex(CommonDataKinds.Phone.DISPLAY_NAME)
+                    val phoneIndex = cursor.getColumnIndex(CommonDataKinds.Phone.NUMBER)
+
+                    message.setText(cursor.getString(nameIndex))
+                    hour.setText(cursor.getString(phoneIndex))
                 }
             }
         }
